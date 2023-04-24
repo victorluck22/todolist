@@ -65,6 +65,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'status' => $request->status,
             'password' => Hash::make($request->password),
         ]);
         if($user){
@@ -103,6 +104,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        //dd($user);
         return view('users.edit', ['user' => $user]);
     }
 
@@ -110,12 +112,33 @@ class UserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Models\User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'status' => ['required', 'integer']
+        ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->status = $request->status;
+        $r = $user->update();
+        if($r){
+            $alert = array(
+                'class' => 'alert-success',
+                'msg'   => 'Usuário alterado com sucesso!'
+            );
+        }else{
+            $alert = array(
+                'class' => 'alert-danger',
+                'msg'   => 'Erro ao alterar o usuário. Por favor, tente mais tarde!'
+            );
+        }
+        return redirect()->route('users.index')->with('class', $alert['class'])->with('msg', $alert['msg']);
     }
 
     /**

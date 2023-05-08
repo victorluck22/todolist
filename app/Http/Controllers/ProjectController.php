@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\Datatables;
@@ -119,7 +120,10 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('projects.edit', ['project' => $project]);
+        $task = new TaskController();
+        $tasks = $task->taskList(0, 0, $project->id);
+
+        return view('projects.edit', ['project' => $project, 'tasks' => $tasks]);
     }
 
     /**

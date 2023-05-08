@@ -21,11 +21,11 @@
             </div>
             <div class="col-lg-3">
                 <label for="prev_start">Prev. Início</label>
-                <input  type="date" class="form-control date" data-defaultDate="" data-provide="datepicker" name="prev_start" id="prev_start" value="{{ ($task->prev_start ?? "")  }}">
+                <input  type="date" class="form-control date campodatareadonly" data-defaultDate="" data-provide="datepicker" name="prev_start" id="prev_start" value="{{ ($task->prev_start ?? "")  }}">
             </div>
             <div class="col-lg-3">
                 <label for="prev_end_date">Prev. Fim</label>
-                <input  type="date" class="datepicker form-control date" data-provide="datepicker" name="prev_end" id="prev_end" value="{{ ($task->prev_end ?? "")  }}">
+                <input  type="date" class="datepicker form-control date campodatareadonly" data-provide="datepicker" name="prev_end" id="prev_end" value="{{ ($task->prev_end ?? "")  }}">
             </div>
             <div class="col-lg-3">
                 <label for="project">Projeto</label>
@@ -41,13 +41,14 @@
                 <select name="status" id="status" class="form-control">
                     <option value="1" {{ ($task->status ?? "") == 1  ? 'selected' : '' }}>ANDAMENTO</option>
                     <option value="2" {{ ($task->status ?? "") == 2  ? 'selected' : '' }}>FINALIZADA</option>
-                    <option value="3" {{ ($task->status ?? "") == 3  ? 'selected' : '' }}>CANCELADA</option>
+                    <option value="3" {{ ($task->status ?? "") == 3  ? 'selected' : '' }}>ON HOLD</option>
+                    <option value="4" {{ ($task->status ?? "") == 4  ? 'selected' : '' }}>CANCELADA</option>
 
                 </select>
             </div>
             <div class="col-lg-3">
                 <label for="out_date">Data Fim</label>
-                <input type="date" class="form-control date" data-provide="datepicker" name="out_date" id="out_date" value="{{ ($task->out_date ?? "")  }}">
+                <input type="date" class="form-control date campodatareadonly" data-provide="datepicker" name="out_date" id="out_date" value="{{ ($task->out_date ?? "")  }}">
             </div>
             <div class="col-lg-12">
                 <lrabel for="description">Descrição Detalhada</label>

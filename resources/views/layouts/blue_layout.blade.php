@@ -39,6 +39,11 @@
             background-color: #CB9402;
             color: white;
         }
+
+        input.campodatareadonly[readonly] {
+			background-color: #fff; /* cor de fundo branca */
+			border: 1px solid #ccc; /* borda cinza */
+		}
     </style>
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.2.0/mdb.min.css" rel="stylesheet"/> --}}
 </head>

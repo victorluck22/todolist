@@ -23,12 +23,8 @@ class TaskController extends Controller
         //,'("<input type=\"button\" class=\"btn btn-info\" value=\"Alterar\"> ") as btn_update'
         if ($request->ajax())
         {
-            $query = DB::table('tasks')
-                        ->join('projects', 'projects.id', '=', 'tasks.project')
-                        ->select('tasks.*', 'projects.name as project_name')
-                        ->selectRaw('case when tasks.status = 1 then "ANDAMENTO" when tasks.status = 2 then "FINALIZADO" else "CANCELADO" end as status_name')
-                        ->get();
-            //dd($data);
+            $query = $this->taskList();
+            //dd($query);
             return Datatables::of($query)
                     ->escapeColumns([])
                     ->addColumn('btn_update', function ($task) {
@@ -47,12 +43,8 @@ class TaskController extends Controller
     public function homeList(Request $request){
         if ($request->ajax())
         {
-            $query = DB::table('tasks')
-                        ->join('projects', 'projects.id', '=', 'tasks.project')
-                        ->where('tasks.user', Auth::user()->id)
-                        ->select('tasks.*', 'projects.name as project_name')
-                        ->selectRaw('case when tasks.status = 1 then "ANDAMENTO" when tasks.status = 2 then "FINALIZADO" else "CANCELADO" end as status_name')
-                        ->get();
+            $query = $this->taskList(1, Auth::user()->id);
+            //dd($query);
             //dd($data);
             return Datatables::of($query)
                     ->escapeColumns([])
@@ -234,5 +226,32 @@ class TaskController extends Controller
         }
 
         return number_format($percentage, 0);
+    }
+
+    /**
+     * Default Function to get task list
+     *
+     * @param int $status
+     * @param int $user
+     * @param int $project
+     * @return array $query
+     */
+    public function taskList(int $status = 0, int $user = 0, int $project = 0){
+        $query = DB::table('tasks')
+        ->join('projects', 'projects.id', '=', 'tasks.project')
+        ->select('tasks.*', 'projects.name as project_name')
+        ->selectRaw('case when tasks.status = 1 then "ANDAMENTO" when tasks.status = 2 then "FINALIZADO" when tasks.status = 3 then "ON HOLD" else "CANCELADO" end as status_name');
+        if($status > 0){
+            $query->where('tasks.status', $status);
+        }
+        if($user > 0){
+            $query->where('tasks.user', $user);
+        }
+        if($project > 0){
+            $query->where('tasks.project', $project);
+        }
+
+
+        return $query->get();
     }
 }
